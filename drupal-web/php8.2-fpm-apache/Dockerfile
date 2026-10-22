@@ -23,7 +23,11 @@ ENV PHPIZE_DEPS \
 		re2c
 
 # persistent / runtime deps
+# Debian 11 LTS ended on 2026-08-31. deb.debian.org still serves the
+# bullseye-security index, but the referenced .deb files return 404.
+# archive.debian.org still has those files.
 RUN set -eux; \
+	sed -i 's|http://deb.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
 		$PHPIZE_DEPS \
