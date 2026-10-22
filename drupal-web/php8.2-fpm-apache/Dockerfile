@@ -400,7 +400,9 @@ RUN docker-php-ext-enable apcu
 RUN pecl clear-cache
 
 # Install new relic agent
-RUN curl -o newrelic.tar.gz https://download.newrelic.com/php_agent/release/newrelic-php5-12.6.0.34-linux.tar.gz \
+# Pinned releases are only served from the per-version archive path.
+# The /release/ directory now contains just the newest agent, so this URL 404s.
+RUN curl -fsSL -o newrelic.tar.gz https://download.newrelic.com/php_agent/archive/12.6.0.34/newrelic-php5-12.6.0.34-linux.tar.gz \
   && gzip -dc newrelic.tar.gz | tar xf - \
   && cd newrelic-php5-12.6.0.34-linux \
   && NR_INSTALL_USE_CP_NOT_LN=1 NR_INSTALL_SILENT=1 ./newrelic-install install \
